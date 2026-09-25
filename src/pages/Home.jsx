@@ -1,6 +1,6 @@
 import React from 'react'
 import Hero from '../components/Layout/Hero'
-import GenderCollection from '../components/Product/genderCollection'
+import GenderCollection from '../components/Product/GenderCollection'
 import Newarravel from '../components/Product/Newarravel'
 import Prouctdetial from '../components/Product/Prouctdetial'
 import ProductGrid from '../components/Product/ProductGrid'
