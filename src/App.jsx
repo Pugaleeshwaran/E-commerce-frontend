@@ -3,15 +3,21 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import UserLayout from './components/Layout/UserLayout.jsx'
 import Home from './pages/Home.jsx'
 import { Toaster } from "sonner"
+import Login from './pages/Login.jsx'
+import Register from './pages/Register.jsx'
+import Profile from './pages/Profile.jsx'
 function App() {
 
 
   return (
     <BrowserRouter>
-      <Toaster position='top-right'/>
+      <Toaster position='top-right' />
       <Routes>
         <Route path='/' element={<UserLayout />}>{/*User layout*/}
           <Route index element={<Home />}></Route>
+          <Route path='login' element={<Login />}></Route>
+          <Route path='register' element={<Register />}></Route>
+          <Route path='profile' element={<Profile />}></Route>
         </Route>
 
         <Route>{/*Admin layout */}</Route>

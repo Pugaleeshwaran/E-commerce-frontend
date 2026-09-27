@@ -4,7 +4,8 @@ import GenderCollection from '../components/Product/GenderCollection'
 import Newarravel from '../components/Product/Newarravel'
 import Prouctdetial from '../components/Product/Prouctdetial'
 import ProductGrid from '../components/Product/ProductGrid'
-
+import FeatureCollection from '../components/Product/FeatureCollection'
+import StoreFeature from '../components/Product/StoreFeature'
 const topWomen = [{
     _id: "1",
     name: "Stylish Jacket",
@@ -69,8 +70,11 @@ const Home = () => {
             {/* women collection */}
             <div className='container mx-auto'>
                 <h3 className='text-4xl font-bold text-center mb-4'>Top Wear for Womens </h3>
-                <ProductGrid product={topWomen}/>
+                <ProductGrid product={topWomen} />
             </div>
+
+            <FeatureCollection />
+            <StoreFeature />
         </>
 
     )
