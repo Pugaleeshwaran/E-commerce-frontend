@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { HiOutlineUser, HiOutlineShoppingBag } from 'react-icons/hi'
 import { HiBars3BottomRight, HiMiniXMark } from 'react-icons/hi2'
 import SearchBar from './SearchBar'
-import Carddraw from '../Layout/carddraw'
+import Carddraw from '../Layout/Carddraw'
 const Navbar = () => {
 
     const [opencart, setopencart] = useState(true)
