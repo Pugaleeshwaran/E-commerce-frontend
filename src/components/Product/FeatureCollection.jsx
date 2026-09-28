@@ -3,7 +3,7 @@ import Feature from '../../assets/featured.webp'
 import { Link } from 'react-router-dom'
 const FeatureCollection = () => {
     return (
-        <section className='py-16 px-4 lg:px-0'>
+        <section className='py-16 px-4'>
             <div className='container mx-auto flex flex-col-reverse lg:flex-row items-center bg-gray-50 rounded-3xl'>
                 {/* left side  */}
 
