@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 const Footer = () => {
     return (
         <footer className='border-t pt-16 pb-10'>
-            <div className='container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-4 lg:px-0'>
+            <div className='container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-4'>
 
                 {/* Newsletter */}
                 <div className='flex flex-col '>
@@ -72,7 +72,7 @@ const Footer = () => {
             </div>
 
             {/* fooderbottom  */}
-            <div className='container mx-auto mt-12 px-4 lg:px-0 border-t border-t-gray-200 pt-6'>
+            <div className='container mx-auto mt-12 px-4 border-t border-t-gray-200 pt-6'>
                 <p className='text-gray-600 text-center font-light text-xs tracking-tight'>©2026,Dev Pugal,All rights Reserved.</p>
             </div>
         </footer>
