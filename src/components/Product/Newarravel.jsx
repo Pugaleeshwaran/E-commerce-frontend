@@ -178,7 +178,7 @@ const Newarravel = () => {
 
 
   return (
-    <section className='py-16 px-4 lg:px-0'>
+    <section className='py-16 px-4'>
 
       <div className='container mx-auto'>
 
