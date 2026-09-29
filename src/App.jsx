@@ -6,6 +6,7 @@ import { Toaster } from "sonner"
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import Profile from './pages/Profile.jsx'
+import Collection from './pages/Collection.jsx'
 function App() {
 
 
@@ -18,6 +19,7 @@ function App() {
           <Route path='login' element={<Login />}></Route>
           <Route path='register' element={<Register />}></Route>
           <Route path='profile' element={<Profile />}></Route>
+          <Route path='collections/:collection' element={<Collection />}></Route>
         </Route>
 
         <Route>{/*Admin layout */}</Route>

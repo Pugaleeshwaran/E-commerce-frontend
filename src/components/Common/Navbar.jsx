@@ -25,7 +25,7 @@ const Navbar = () => {
                 </div>
                 {/* center */}
                 <div className='hidden md:flex space-x-6 '>
-                    <Link className="text-gray-700 hover:text-black text-sm font-medium uppercase">MEN</Link>
+                    <Link to={'/collections/all'} className="text-gray-700 hover:text-black text-sm font-medium uppercase">MEN</Link>
                     <Link className="text-gray-700 hover:text-black text-sm font-medium uppercase">WOMEN</Link>
                     <Link className="text-gray-700 hover:text-black text-sm font-medium uppercase">TOP WEAR</Link>
                     <Link className="text-gray-700 hover:text-black text-sm font-medium uppercase">BOTTOM WEAR</Link>
@@ -48,14 +48,14 @@ const Navbar = () => {
             </nav>
             <Carddraw handlecart={handlecart} opencart={opencart} />
             {/* mobile Nav slier */}
-            <div className={` pl-3 fixed top-0 left-0 z-50 bg-white shadow-lg z-60 w-1/2 h-dvh  transform transition-transform duration-300 md:hidden ${mobilenav?"translate-x-0":"-translate-x-full"}`}>
+            <div className={` pl-3 fixed top-0 left-0 z-50 bg-white shadow-lg z-60 w-1/2 h-dvh  transform transition-transform duration-300 md:hidden ${mobilenav ? "translate-x-0" : "-translate-x-full"}`}>
                 <div className='flex justify-end p-3'>
-                    <HiMiniXMark className='text-2xl w-6 h-6 cursor-pointer text-black' onClick={handlemobilenav}/>
+                    <HiMiniXMark className='text-2xl w-6 h-6 cursor-pointer text-black' onClick={handlemobilenav} />
                 </div>
                 <div>
                     <h3 className='text-2xl font-semibold '>Menu</h3>
                     <div className='flex flex-col gap-4 mt-5'>
-                        <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"#"}>MEN</Link>
+                        <Link to={'/collections/all'} className='"text-gray-700 hover:text-black text-sm font-medium uppercase'>MEN</Link>
                         <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"#"}>WOMEN</Link>
                         <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"#"}>TOP WEAR</Link>
                         <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"#"}>BOTTOM WEAR</Link>
