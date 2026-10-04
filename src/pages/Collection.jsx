@@ -95,8 +95,11 @@ const Collection = () => {
                 <Filter />
             </div>
             <div className='flex-grow p-4'>
-                <h2 className='text-2xl uppercase mb-4'>All collections</h2>
-                <SortItem />
+                <div className=' mb-4 flex flex-col gap-2 items-center md:flex-row justify-between'>
+                    <h2 className='text-2xl uppercase '>All collections</h2>
+                    <SortItem />
+                </div>
+
                 <ProductGrid product={productItem} />
             </div>
         </div>

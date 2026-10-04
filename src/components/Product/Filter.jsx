@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 
 const Filter = () => {
     const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate()
     const [filter, setFilter] = useState([{
         category: "",
         gender: "",
@@ -11,9 +12,54 @@ const Filter = () => {
         meterial: [],
         brand: [],
         minPrice: 0,
-        maxPrice: 10000,
+        maxPrice: 2000,
     }]);
     const [priceRange, setPriceRange] = useState([0, 100]);
+
+    const handlegetValue = (e) => {
+        const { name, value, type, checked } = e.target
+
+
+        let newFilter = { ...filter };
+        if (type == "checkbox") {
+            if (checked) {
+                newFilter[name] = [...(newFilter[name] || []), value];
+            }
+            else {
+                newFilter[name] = newFilter[name].filter(function (item) {
+                    return item !== value
+                })
+            }
+        }
+        else {
+            newFilter[name] = value;
+        }
+        setFilter(newFilter)
+        console.log(newFilter);
+        updateURLparams(newFilter)
+    }
+    const updateURLparams = (newFilters) => {
+        const params = new URLSearchParams();
+
+        Object.keys(newFilters).forEach(function (key) {
+            if (Array.isArray(newFilters[key]) && newFilters[key].length > 0) {
+                params.append(key, newFilters[key].join(","));
+            }
+            else if (newFilters[key]) {
+                params.append(key, newFilters[key])
+            }
+        });
+        setSearchParams(params)
+        navigate(`?${params.toString()}`)
+    }
+
+    const handlePrice = (e) => {
+        const newPrice = e.target.value
+        setPriceRange([0, newPrice])
+        const newFilter = { ...Filter, minPrice: 0, maxPrice: newPrice };
+        setFilter(filter);
+        updateURLparams(newFilter)
+    }
 
     const category = ["Top Wear", "Bottom Wear"];
     const gender = ["Male", "Female"];
@@ -33,9 +79,9 @@ const Filter = () => {
             meterial: param.meterial ? param.meterial.split(",") : [],
             brand: param.brand ? param.brand.split(",") : [],
             minPrice: param.minPrice || 0,
-            maxPrice: param.maxPrice || 100,
+            maxPrice: param.maxPrice || 2000,
         })
-        setPriceRange([0, param.maxPrice || 10000])
+        setPriceRange([0, param.maxPrice || 2000])
     }, [searchParams])
     return (
         <div className='p-4'>
@@ -45,13 +91,17 @@ const Filter = () => {
             <div className='mb-6'>
                 <label className='block text-gray-600 font-medium mb-2'>Category</label>
                 {
-                    category.map((cat) => {
+                    category.map((category) => {
                         return (
-                            <div key={cat} className='flex items-center mb-1'>
-                                <input type="radio" name='cat'
+                            <div key={category} className='flex items-center mb-1'>
+                                <input onChange={handlegetValue}
+                                    value={category}
+                                    type="radio"
+                                    name='category'
+                                    checked={filter.category == category}
                                     className='mr-2 h-4 w-4 text-blue-500 border-gray-300'
                                 />
-                                <span>{cat}</span>
+                                <span>{category}</span>
                             </div>
                         )
                     })
@@ -61,13 +111,18 @@ const Filter = () => {
             <div className='mb-6'>
                 <label className='block text-gray-600 font-medium mb-2'>Gender</label>
                 {
-                    gender.map((cat) => {
+                    gender.map((gender) => {
                         return (
-                            <div key={cat} className='flex items-center mb-1'>
-                                <input type="radio" name='cat'
+                            <div key={gender} className='flex items-center mb-1'>
+                                <input
+                                    onChange={handlegetValue}
+                                    value={gender}
+                                    type="radio"
+                                    name='gender'
+                                    checked={filter.gender == gender}
                                     className='mr-2 h-4 w-4 text-blue-500 border-gray-300'
                                 />
-                                <span >{cat}</span>
+                                <span >{gender}</span>
                             </div>
                         )
                     })
@@ -81,7 +136,13 @@ const Filter = () => {
                         color.map((color) => {
                             return (
                                 <div key={color} className='flex items-center mb-1'>
-                                    <button className='w-8 border h-8 border-gray-300 cursor-pointer rounded-full transition hover:scale-105' style={{ backgroundColor: color.toLocaleLowerCase() }}>
+                                    <button
+                                        onClick={handlegetValue}
+                                        value={color}
+                                        name='color'
+                                        checked={filter.color == color}
+                                        className={`w-8 border h-8 border-gray-300 cursor-pointer rounded-full transition hover:scale-105 ${filter.color == color ? "ring-2 ring-blue-200" : ""}`}
+                                        style={{ backgroundColor: color.toLocaleLowerCase() }}>
                                     </button>
                                 </div>
                             )
@@ -93,11 +154,16 @@ const Filter = () => {
                 <label className='block text-gray-600 font-medium mb-2'>Size</label>
                 <div className='flex flex-col gap-2'>
                     {
-                        size.map((color) => {
+                        size.map((size) => {
                             return (
-                                <div key={color} className='flex items-center mb-1'>
-                                    <input type="checkbox" className='mr-2 h-4 w-4 text-blue-500 focus:border-gray-300' />
-                                    <span>{color}</span>
+                                <div key={size} className='flex items-center mb-1'>
+                                    <input name='size'
+                                        onChange={handlegetValue}
+                                        value={size}
+                                        type="checkbox"
+                                        checked={filter.size?.includes(size)}
+                                        className='mr-2 h-4 w-4 text-blue-500 focus:border-gray-300' />
+                                    <span>{size}</span>
                                 </div>
                             )
                         })
@@ -108,11 +174,16 @@ const Filter = () => {
                 <label className='block text-gray-600 font-medium mb-2'>Material</label>
                 <div className='flex flex-col gap-2'>
                     {
-                        meterial.map((color) => {
+                        meterial.map((meterial) => {
                             return (
-                                <div key={color} className='flex items-center mb-1 gap-1'>
-                                    <input type="checkbox" className='mr-2 h-4 w-4 text-blue-500 focus:border-gray-300' />
-                                    <span>{color}</span>
+                                <div key={meterial} className='flex items-center mb-1 gap-1'>
+                                    <input onChange={handlegetValue}
+                                        value={meterial}
+                                        name='meterial'
+                                        type="checkbox"
+                                        checked={filter.meterial?.includes(meterial)}
+                                        className='mr-2 h-4 w-4 text-blue-500 focus:border-gray-300' />
+                                    <span>{meterial}</span>
                                 </div>
                             )
                         })
@@ -123,11 +194,18 @@ const Filter = () => {
                 <label className='block text-gray-600 font-medium mb-2'>Brand</label>
                 <div className='flex flex-col gap-2'>
                     {
-                        brand.map((color) => {
+                        brand.map((brand) => {
                             return (
-                                <div key={color} className='flex items-center mb-1 gap-1'>
-                                    <input type="checkbox" className='mr-2 h-4 w-4 text-blue-500 focus:border-gray-300' />
-                                    <span>{color}</span>
+                                <div key={brand} className='flex items-center mb-1 gap-1'>
+                                    <input name='brand'
+                                        onChange={handlegetValue}
+                                        value={brand}
+                                        type="checkbox"
+                                        checked={filter.brand?.includes(brand)}
+
+                                        className='mr-2 h-4 w-4 text-blue-500 focus:border-gray-300' />
+                                    <span>{brand}</span>
+
                                 </div>
                             )
                         })
@@ -139,7 +217,12 @@ const Filter = () => {
                 <div className='flex flex-col gap-2'>
 
                     <div className='flex flex-col items-center mb-1 gap-1'>
-                        <input type="range" name='range' min={0} max={10000} className='w-full h-2 bg-gray-300 rounded-xl appearance-none cursor-pointer' />
+                        <input type="range" 
+                        name='range'
+                        min={0} max={2000} 
+                        onChange={handlePrice}
+                        value={priceRange[1]}
+                        className='w-full h-2 bg-gray-300 rounded-xl appearance-none cursor-pointer' />
                         <div className='w-full flex justify-between'>
                             <span>₹0</span>
                             <span>₹{priceRange[1]}</span>
