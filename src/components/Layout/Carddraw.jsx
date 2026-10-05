@@ -1,7 +1,14 @@
 import React from 'react'
 import { HiMiniXMark } from 'react-icons/hi2'
 import Cartcondent from '../Cart/Cartcondent'
+import { useNavigate } from 'react-router-dom'
 const Carddraw = ({ handlecart, opencart }) => {
+
+    const navigate = useNavigate()
+
+    const handleCheckout = () => {
+        navigate('/checkout')
+    }
     return (
         <div className={`fixed h-dvh text-black bg-white right-0 top-0 w-3/4 z-10 flex justify-between drop-shadow items-center flex-col py-3 px-5 transform transition-transform duration-300 md:w-1/2 lg:w-1/4 sm:w-1/2 ${opencart ? "translate-x-full" : "translate-x-0"
             } `}>
@@ -15,12 +22,12 @@ const Carddraw = ({ handlecart, opencart }) => {
                     Your Card is Empty
                 </p> */}
                 <Cartcondent />
-                 <div className='w-full gap-2 flex flex-col'>
-                <button className='bg-gray-950 text-white px-2 py-1 w-full rounded-md font-semibold text-base'>Checkout</button>
-                <p className='text-nowrap text-xs text-gray-500'>Shipping,taxes and discount codes calculated at checkout</p>
+                <div className='w-full gap-2 flex flex-col'>
+                    <button onClick={handleCheckout} className='bg-gray-950 text-white px-2 py-1 w-full rounded-md font-semibold text-base'>Checkout</button>
+                    <p className='text-nowrap text-xs text-gray-500'>Shipping,taxes and discount codes calculated at checkout</p>
+                </div>
             </div>
-            </div>
-           
+
 
         </div>
     )
