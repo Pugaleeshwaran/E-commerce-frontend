@@ -9,6 +9,7 @@ import Profile from './pages/Profile.jsx'
 import Collection from './pages/Collection.jsx'
 import Prouctdetial from './components/Product/Prouctdetial.jsx'
 import Checkout from './components/Cart/Checkout.jsx'
+import OrderConformaion from './pages/OrderConformaion.jsx'
 function App() {
 
 
@@ -24,6 +25,7 @@ function App() {
           <Route path='collections/:collection' element={<Collection />}></Route>
           <Route path='/product/:id' element={<Prouctdetial />}></Route>
           <Route path='/checkout' element={<Checkout />}></Route>
+          <Route path='//order-conformation' element={<OrderConformaion />}></Route>
         </Route>
 
         <Route>{/*Admin layout */}</Route>
