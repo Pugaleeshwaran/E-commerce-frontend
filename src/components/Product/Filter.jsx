@@ -56,8 +56,8 @@ const Filter = () => {
     const handlePrice = (e) => {
         const newPrice = e.target.value
         setPriceRange([0, newPrice])
-        const newFilter = { ...Filter, minPrice: 0, maxPrice: newPrice };
-        setFilter(filter);
+        const newFilter = { ...filter, minPrice: 0, maxPrice: newPrice };
+        setFilter(newFilter);
         updateURLparams(newFilter)
     }
 
