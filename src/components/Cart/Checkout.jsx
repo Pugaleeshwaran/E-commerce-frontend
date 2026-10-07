@@ -72,7 +72,7 @@ const Checkout = () => {
 
                                 <input value={shippingAddress.fristName}
                                     required
-                                    onChange={(e) => { setShippingAddress({ ...setShippingAddress, fristName: e.target.value }) }}
+                                    onChange={(e) => { setShippingAddress({ ...shippingAddress, fristName: e.target.value }) }}
                                     className='w-full p-2 border rounded' type="text" />
                             </div>
                             <div>
