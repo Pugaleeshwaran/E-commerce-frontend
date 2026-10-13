@@ -7,7 +7,8 @@ const Carddraw = ({ handlecart, opencart }) => {
     const navigate = useNavigate()
 
     const handleCheckout = () => {
-        navigate('/checkout')
+        handlecart();
+        navigate('/checkout');
     }
     return (
         <div className={`fixed h-dvh text-black bg-white right-0 top-0 w-3/4 z-10 flex justify-between drop-shadow items-center flex-col py-3 px-5 transform transition-transform duration-300 md:w-1/2 lg:w-1/4 sm:w-1/2 ${opencart ? "translate-x-full" : "translate-x-0"
@@ -17,7 +18,7 @@ const Carddraw = ({ handlecart, opencart }) => {
                 <HiMiniXMark className='text-2xl w-6 h-6 cursor-pointer text-black' onClick={handlecart} />
             </div>
 
-            <div className='text-black w-full h-full flex flex-col justify-between mt-10'>
+            <div className='text-black  w-full h-full flex flex-col justify-between mt-10'>
                 {/* <p className=''>
                     Your Card is Empty
                 </p> */}
