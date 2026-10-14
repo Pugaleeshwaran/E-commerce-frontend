@@ -32,6 +32,7 @@ const Navbar = () => {
                 </div>
                 {/* right */}
                 <div className='flex items-center  space-x-3 '>
+                    <Link to={"/admin"} className='block bg-black py-0.5 px-3 text-white rounded'>Admin</Link>
                     <Link to={"/profile"} className='hover:text-black'><HiOutlineUser className='w-6 h-6 text-gray-700' /></Link>
                     <button onClick={handlecart} className='relative hover:text-black'>
                         <HiOutlineShoppingBag className='w-6 h-6 text-gray-700' />
