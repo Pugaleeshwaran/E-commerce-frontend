@@ -16,6 +16,8 @@ import AdminLayout from './components/Admin/AdminLayout.jsx'
 import AdminHome from './pages/AdminHome.jsx'
 import Usermanagement from './components/Admin/Usermanagement.jsx'
 import ProductManagement from './components/Admin/ProductManagement.jsx'
+import EditProductPage from './components/Admin/EditProductPage.jsx'
+import OrderMananage from './components/Admin/OrderMananage.jsx'
 function App() {
 
 
@@ -40,6 +42,8 @@ function App() {
           <Route index element={<AdminHome />}></Route>
           <Route path='users' element={<Usermanagement />}></Route>
           <Route path='products' element={<ProductManagement />}></Route>
+          <Route path='products/:id/edit' element={<EditProductPage />}></Route>
+          <Route path='orders' element={<OrderMananage />}></Route>
         </Route>
       </Routes>
 

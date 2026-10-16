@@ -9,19 +9,19 @@ const ProductManagement = () => {
             sku: "1234532123",
         },
         {
-            _id: 12321,
+            _id: 12232321,
             name: "Shirt",
             price: 110,
             sku: "1234532123",
         },
         {
-            _id: 12321,
+            _id: 1256321,
             name: "Shirt",
             price: 110,
             sku: "1234532123",
         },
         {
-            _id: 12321,
+            _id: 1234321,
             name: "Shirt",
             price: 110,
             sku: "1234532123",
@@ -55,9 +55,9 @@ const ProductManagement = () => {
                                             className='border-b hover:bg-gray-50 cursor-pointer'>
                                             <td className='p-4 font-medium text-gray-900 whitespace-nowrap'>{product.name}</td>
                                             <td className='p-4'>₹{product.price}</td>
-                                            <td className='p-4'>₹{product.sku}</td>
-                                            <td className='p-4'>
-                                                <Link to={`/admin/products/${product._id}`} className='bg-yellow-500 text-white px-2 py-2 rounded mr-2 hover:bg-yellow-600'>Edit</Link>
+                                            <td className='p-4'>{product.sku}</td>
+                                            <td className='p-4 flex'>
+                                                <Link to={`/admin/products/${product._id}/edit`} className='bg-yellow-500 text-white px-2 py-2 rounded mr-2 hover:bg-yellow-600'>Edit</Link>
                                                 <button onClick={() => handleDelete(product._id)} className='bg-red-500 text-white px-2 py-1.5 rounded hover:bg-red-600'>Delete</button>
                                             </td>
                                         </tr>
