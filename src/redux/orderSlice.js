@@ -1,0 +1,86 @@
+import { createSlice, createAsyncThunk, rejectWithValue } from "@reduxjs/toolkit";
+import axios from "axios";
+
+//Async thunk to fetch user orders
+
+export const fetchUserOrders = createAsyncThunk(
+    "orders/fetchUserOrders",
+    // why we add _ mean there is not 1st parameter here we add _ near async function
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/orders/my-orders`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("userToken")}`;
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+//Async thunk to fetch orders details by ID
+
+export const fetchOrderDetails = createAsyncThunk(
+    "orders/fetchOrderDetails", async (orderId, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(
+                `${import.meta.env.VITE_BACKEND_URLx}/api/order/${orderId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            rejectWithValue(error.response.data)
+        }
+    }
+);
+
+const orderSlice = createSlice({
+    name: "orders",
+    initialState: {
+        orders: [],
+        totalOrders: 0,
+        orderDetails: null,
+        loading: false,
+        error: null,
+    },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            //fetch user orders
+            .addCase(fetchUserOrders.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchUserOrders.fulfilled, (state, action) => {
+                state.loading = false;
+                state.orders = action.payload;
+            })
+            .addCase(fetchUserOrders, (state, action) => {
+                state.loading = true;
+                state.error = action.payload.message;
+            })
+            //Fetch order Details
+            .addCase(fetchOrderDetails.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchOrderDetails.fulfilled, (state, action) => {
+                state.loading = false;
+                state.orders = action.payload;
+            })
+            .addCase(fetchOrderDetails, (state, action) => {
+                state.loading = true;
+                state.error = action.payload.message;
+            })
+    },
+})
+
+export default orderSlice.reducer;

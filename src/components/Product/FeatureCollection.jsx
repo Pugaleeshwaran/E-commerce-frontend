@@ -15,7 +15,7 @@ const FeatureCollection = () => {
                 </div>
                 <div className='lg:w-1/2'>
                     <img src={Feature} alt="feature collection"
-                    className='w-full h-full object-cover lg:rounded-e-3xl ' />
+                        className='w-full h-full object-cover lg:rounded-e-3xl ' />
                 </div>
             </div>
         </section>

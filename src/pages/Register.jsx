@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import reg from '../assets/register.webp'
+import { registerUser } from '../redux/authSlice';
+import { useDispatch } from "react-redux"
 const Register = () => {
     const [name, setname] = useState("")
-    const [username, setusername] = useState("");
+    const [mail, setmail] = useState("");
     const [password, setpassword] = useState("");
+    const dispatch = useDispatch()
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("Register Data", { name, username, password });
+        dispatch(registerUser({ name, mail, password }))
 
     }
     return (
@@ -19,7 +22,7 @@ const Register = () => {
                     </div>
 
                     <h2 className='text-2xl font-bold text-center mb-6'>Hey there! 👋🏼</h2>
-                    <p className='text-center mb-6 font-medium'>Enter your username and password to Login.</p>
+                    <p className='text-center mb-6 font-medium'>enter your mail and password to Login.</p>
                     <div className='mb-4 '>
                         <label className='block text-sm font-semibold mb-2'>Name</label>
                         <input required
@@ -32,8 +35,8 @@ const Register = () => {
                     <div className='mb-4 '>
                         <label className='block text-sm font-semibold mb-2'>Email</label>
                         <input required
-                            value={username}
-                            onChange={(e) => setusername(e.target.value)}
+                            value={mail}
+                            onChange={(e) => setmail(e.target.value)}
                             type="email"
                             className='border p-2 w-full rounded '
                             placeholder='Enter your email address' />

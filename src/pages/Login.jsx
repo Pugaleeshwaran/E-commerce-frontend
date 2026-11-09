@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import log from '../assets/login.webp'
+import { loginUser } from '../redux/authSlice';
+import { useDispatch } from 'react-redux';
 const Login = () => {
-    const [username, setusername] = useState("");
+    const [mail, setmail] = useState("");
     const [password, setpassword] = useState("");
+    const dispatch = useDispatch();
 
     const handlesubmit = (e) => {
         e.preventDefault()
-        console.log("login data", { username, password });
-
+        dispatch(loginUser({ mail, password }))
     }
     return (
         <div className='flex'>
@@ -24,8 +26,8 @@ const Login = () => {
                         <label className='block text-sm font-semibold mb-2'>Email</label>
                         <input
                             required
-                            value={username}
-                            onChange={(e) => setusername(e.target.value)}
+                            value={mail}
+                            onChange={(e) => setmail(e.target.value)}
                             type="email"
                             className='border p-2 w-full rounded '
                             placeholder='Enter you email address' />

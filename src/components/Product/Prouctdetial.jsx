@@ -50,7 +50,7 @@ const productIdem = [
         price: "₹520",
         img: "https://picsum.photos/500/500?random=4"
     },
-    
+
 ]
 
 const Prouctdetial = () => {

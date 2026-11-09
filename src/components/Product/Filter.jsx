@@ -217,12 +217,12 @@ const Filter = () => {
                 <div className='flex flex-col gap-2'>
 
                     <div className='flex flex-col items-center mb-1 gap-1'>
-                        <input type="range" 
-                        name='range'
-                        min={0} max={2000} 
-                        onChange={handlePrice}
-                        value={priceRange[1]}
-                        className='w-full h-2 bg-gray-300 rounded-xl appearance-none cursor-pointer' />
+                        <input type="range"
+                            name='range'
+                            min={0} max={2000}
+                            onChange={handlePrice}
+                            value={priceRange[1]}
+                            className='w-full h-2 bg-gray-300 rounded-xl appearance-none cursor-pointer' />
                         <div className='w-full flex justify-between'>
                             <span>₹0</span>
                             <span>₹{priceRange[1]}</span>
