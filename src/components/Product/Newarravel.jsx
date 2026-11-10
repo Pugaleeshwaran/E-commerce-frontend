@@ -1,59 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import axios from 'axios'
 
 const Newarravel = () => {
 
-  const arravel = [
-    {
-      _id: "1",
-      name: "Stylish Jacket",
-      price: "₹120",
-      img: "https://picsum.photos/500/500?random=1"
-    },
-    {
-      _id: "2",
-      name: "Stylish Shirt",
-      price: "₹350",
-      img: "https://picsum.photos/500/500?random=2"
-    },
-    {
-      _id: "3",
-      name: "Stylish Top",
-      price: "₹150",
-      img: "https://picsum.photos/500/500?random=3"
-    },
-    {
-      _id: "4",
-      name: "Stylish Bottom",
-      price: "₹520",
-      img: "https://picsum.photos/500/500?random=4"
-    },
-    {
-      _id: "5",
-      name: "Stylish Skirts",
-      price: "₹620",
-      img: "https://picsum.photos/500/500?random=5"
-    },
-    {
-      _id: "6",
-      name: "Casual Pant",
-      price: "₹820",
-      img: "https://picsum.photos/500/500?random=6"
-    },
-    {
-      _id: "7",
-      name: "Casual Shirts",
-      price: "₹750",
-      img: "https://picsum.photos/500/500?random=7"
-    },
-    {
-      _id: "8",
-      name: "Inner's",
-      price: "₹120",
-      img: "https://picsum.photos/500/500?random=8"
-    }
-  ]
+
 
   // Scroll container
   const scrollRef = useRef(null)
@@ -66,6 +18,22 @@ const Newarravel = () => {
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollStart, setScrollStart] = useState(0)
+
+  const [newArrivals, setnewArrivals] = useState([])
+
+  useEffect(() => {
+    const fetchNewArravel = async () => {
+      try {
+        const respone = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products/new-arrivals`)
+        setnewArrivals(respone.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchNewArravel();
+
+  }, [])
 
 
   // --------------------------------
@@ -174,7 +142,7 @@ const Newarravel = () => {
 
   useEffect(() => {
     checkScroll()
-  }, [])
+  }, [newArrivals])
 
 
   return (
@@ -201,10 +169,9 @@ const Newarravel = () => {
             onClick={scrollLeft}
             disabled={isStart}
             className={`w-8 h-8 border flex items-center justify-center
-              ${
-                isStart
-                  ? 'opacity-30 cursor-not-allowed'
-                  : 'cursor-pointer hover:bg-gray-100'
+              ${isStart
+                ? 'opacity-30 cursor-not-allowed'
+                : 'cursor-pointer hover:bg-gray-100'
               }`}
           >
             <FiChevronLeft className='w-6 h-6' />
@@ -216,10 +183,9 @@ const Newarravel = () => {
             onClick={scrollRight}
             disabled={isEnd}
             className={`w-8 h-8 border flex items-center justify-center
-              ${
-                isEnd
-                  ? 'opacity-30 cursor-not-allowed'
-                  : 'cursor-pointer hover:bg-gray-100'
+              ${isEnd
+                ? 'opacity-30 cursor-not-allowed'
+                : 'cursor-pointer hover:bg-gray-100'
               }`}
           >
             <FiChevronRight className='w-6 h-6' />
@@ -241,8 +207,7 @@ const Newarravel = () => {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-
-        className='container mx-auto flex overflow-x-scroll space-x-6 relative scrollbar-hide'
+        className='container mx-auto flex overflow-x-scroll space-x-6 relative scrollbar-hide select-none'
 
         style={{
           cursor: isDragging ? 'grabbing' : 'grab',
@@ -251,7 +216,7 @@ const Newarravel = () => {
       >
 
         {
-          arravel.map((product) => {
+          newArrivals.map((product) => {
 
             return (
 
@@ -262,7 +227,7 @@ const Newarravel = () => {
 
                 <img
                   draggable="false"
-                  src={product.img}
+                  src={product.images[0].url}
                   alt={product.name}
                   className='w-full h-[500px] object-cover rounded-lg'
                 />
@@ -274,14 +239,16 @@ const Newarravel = () => {
                   <Link
                     to={`/product/${product._id}`}
                     className='block'
+                    draggable={false}
+                    onDragStart={(e) => e.preventDefault()}
                   >
 
-                    <h4 className='text-2xl font-semibold'>
+                    <h4 className='text-xl font-semibold'>
                       {product.name}
                     </h4>
 
                     <p className='text-base font-normal'>
-                      {product.price}
+                      ₹ {product.price}
                     </p>
 
                   </Link>

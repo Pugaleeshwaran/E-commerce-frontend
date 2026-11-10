@@ -1,11 +1,10 @@
 import { createSlice, createAsyncThunk, __DO_NOT_USE__ActionTypes } from "@reduxjs/toolkit";
 import axios from "axios";
-import { build } from "vite";
 
 //fetch all order (admin only)
 
 export const fetchAllOrders = createAsyncThunk(
-    "adminOrders/fetchAllOders", async (__DO_NOT_USE__ActionTypes, { RejectedWithValue }) => {
+    "adminOrders/fetchAllOrders", async (__DO_NOT_USE__ActionTypes, { RejectedWithValue }) => {
         try {
             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/admin/orders`,
                 {
@@ -24,7 +23,7 @@ export const fetchAllOrders = createAsyncThunk(
 //update order delivary status
 
 export const updateOrderStatus = createAsyncThunk(
-    "adminOrders/fetchAllOders", async ({ id, status }, { RejectedWithValue }) => {
+    "adminOrders/updateOrders", async ({ id, status }, { RejectedWithValue }) => {
         try {
             const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/admin/orders/${id}`, status,
                 {
@@ -43,7 +42,7 @@ export const updateOrderStatus = createAsyncThunk(
 //delete a order 
 
 export const deleteOrder = createAsyncThunk(
-    "adminOrders/fetchAllOders", async ({ id }, { RejectedWithValue }) => {
+    "adminOrders/deleteOrders", async ({ id }, { RejectedWithValue }) => {
         try {
             await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/admin/orders/${id}`,
                 {
