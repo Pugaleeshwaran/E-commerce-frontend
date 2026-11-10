@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, rejectWithValue } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 
 //Async thunk to fetch user orders
@@ -11,7 +11,7 @@ export const fetchUserOrders = createAsyncThunk(
             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/orders/my-orders`,
                 {
                     headers: {
-                        Authorization: `Bearer ${localStorage.getItem("userToken")}`;
+                        Authorization: `Bearer ${localStorage.getItem("userToken")}`
                     },
                 }
             );
@@ -63,7 +63,7 @@ const orderSlice = createSlice({
                 state.loading = false;
                 state.orders = action.payload;
             })
-            .addCase(fetchUserOrders, (state, action) => {
+            .addCase(fetchUserOrders.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.payload.message;
             })
@@ -76,7 +76,7 @@ const orderSlice = createSlice({
                 state.loading = false;
                 state.orders = action.payload;
             })
-            .addCase(fetchOrderDetails, (state, action) => {
+            .addCase(fetchOrderDetails.rejected, (state, action) => {
                 state.loading = true;
                 state.error = action.payload.message;
             })
