@@ -3,15 +3,28 @@ import { FaFilter } from 'react-icons/fa6';
 import Filter from '../components/Product/Filter';
 import SortItem from '../components/Product/SortItem';
 import ProductGrid from '../components/Product/ProductGrid';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProductsByFilters } from '../redux/productsSlice';
 
 const Collection = () => {
-    const [productItem, setproduct] = useState([])
+    const { collection } = useParams();
+    const [searchParam] = useSearchParams();
+    const dispatch = useDispatch();
+    const { products, loading, error } = useSelector((state) => state.products);
+    const queryParams = Object.fromEntries([...searchParam]);
     const sidebarRef = useRef(null)
     const [sidebar, setsidebar] = useState(false)
+
+    useEffect(() => {
+        dispatch(fetchProductsByFilters({ collection, ...queryParams }));
+    }, [dispatch, collection, searchParam]);
 
     const handleSidebar = () => {
         setsidebar(!sidebar)
     }
+
+
 
     const handleclickOut = (e) => {
         if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
@@ -28,62 +41,6 @@ const Collection = () => {
         }
 
     })
-    useEffect(() => {
-        setTimeout(() => {
-            const fetchdata = [
-                {
-                    _id: "1",
-                    name: "Stylish Jacket",
-                    price: "₹120",
-                    img: "https://picsum.photos/500/500?random=11"
-                },
-                {
-                    _id: "2",
-                    name: "Stylish Shirt",
-                    price: "₹350",
-                    img: "https://picsum.photos/500/500?random=12"
-                },
-                {
-                    _id: "3",
-                    name: "Stylish Top",
-                    price: "₹150",
-                    img: "https://picsum.photos/500/500?random=13"
-                },
-                {
-                    _id: "4",
-                    name: "Stylish Bottom",
-                    price: "₹520",
-                    img: "https://picsum.photos/500/500?random=14"
-                },
-                {
-                    _id: "5",
-                    name: "Stylish Skirts",
-                    price: "₹620",
-                    img: "https://picsum.photos/500/500?random=15"
-                },
-                {
-                    _id: "6",
-                    name: "Casual Pant",
-                    price: "₹820",
-                    img: "https://picsum.photos/500/500?random=16"
-                },
-                {
-                    _id: "7",
-                    name: "Casual Shirts",
-                    price: "₹750",
-                    img: "https://picsum.photos/500/500?random=17"
-                },
-                {
-                    _id: "8",
-                    name: "Inner's",
-                    price: "₹120",
-                    img: "https://picsum.photos/500/500?random=18"
-                }
-            ]
-            setproduct(fetchdata)
-        }, 1000);
-    }, [])
-
     return (
         <div className='flex flex-col lg:flex-row'>
             {/* mobile filter btn */}
@@ -100,7 +57,7 @@ const Collection = () => {
                     <SortItem />
                 </div>
 
-                <ProductGrid product={productItem} />
+                <ProductGrid products={products} loading={loading} error={error} />
             </div>
         </div>
     )

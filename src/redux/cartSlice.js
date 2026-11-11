@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";;
 
 //Helper function to load cart form localstorage
@@ -16,7 +16,7 @@ const saveCarttoStorage = (cart) => {
 
 //Fetch cart for a user or guest
 export const fetchCart = createAsyncThunk("cart/fetchCart",
-    async ({ userId, guestId }, { RejectedWithValue }) => {
+    async ({ userId, guestId }, { rejectWithValue }) => {
         try {
             const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/cart`, {
                 params: { userId, guestId },
@@ -24,14 +24,14 @@ export const fetchCart = createAsyncThunk("cart/fetchCart",
             return response.data
         } catch (error) {
             console.error(error);
-            return RejectedWithValue(error.response.data);
+            return rejectWithValue(error.response.data);
 
         }
     }
 );
 
 //Add an item to the cart for a user or guest
-export const addToCart = createAsyncThunk("cart/addtoCart", async ({ productId, quantity, size, color, guestId, userId }, { RejectedWithValue }) => {
+export const addToCart = createAsyncThunk("cart/addtoCart", async ({ productId, quantity, size, color, guestId, userId }, { rejectWithValue }) => {
     try {
         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/cart`,
             {
@@ -39,14 +39,14 @@ export const addToCart = createAsyncThunk("cart/addtoCart", async ({ productId, 
             });
         return response.data
     } catch (error) {
-        return RejectedWithValue(error.response.data);
+        return rejectWithValue(error.response.data);
     }
 });
 
 //Update the quantity of an item in the cart 
 export const updateCartitemQuantity = createAsyncThunk(
     "cart/updateCartitemQuantity", async ({ productId, quantity, guestId, userId, size, color },
-        { RejectedWithValue }) => {
+        { rejectWithValue }) => {
     try {
         const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/cart`,
             {
@@ -60,14 +60,14 @@ export const updateCartitemQuantity = createAsyncThunk(
         );
         return response.data
     } catch (error) {
-        return RejectedWithValue(error.response.data)
+        return rejectWithValue(error.response.data)
     }
 });
 //Remove an Item from the cart
 
 export const removeFromCart = createAsyncThunk("cart/removeFromCart", async ({
     productId, guestId, userId, size, color
-}, { RejectedWithValue }) => {
+}, { rejectWithValue }) => {
     try {
         const response = await axios({
             method: "DELETE",
@@ -76,13 +76,13 @@ export const removeFromCart = createAsyncThunk("cart/removeFromCart", async ({
         });
         return response.data
     } catch (error) {
-        return RejectedWithValue(error.response.data)
+        return rejectWithValue(error.response.data)
     }
 });
 
 // Merge guest cart into user cart
 export const mergeCart = createAsyncThunk(
-    "cart/mergeCart", async ({ guestId, user }, { RejectedWithValue }) => {
+    "cart/mergeCart", async ({ guestId, user }, { rejectWithValue }) => {
         try {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/cart/merge`, { guestId, user },
                 {
@@ -93,7 +93,7 @@ export const mergeCart = createAsyncThunk(
             );
             return response.data;
         } catch (error) {
-            return RejectedWithValue(error.response.data);
+            return rejectWithValue(error.response.data);
         }
     }
 );

@@ -155,6 +155,8 @@ const Filter = () => {
                 <div className='flex flex-col gap-2'>
                     {
                         size.map((size) => {
+                            console.log(size);
+
                             return (
                                 <div key={size} className='flex items-center mb-1'>
                                     <input name='size'

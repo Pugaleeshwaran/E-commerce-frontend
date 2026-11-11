@@ -4,10 +4,14 @@ import { HiOutlineUser, HiOutlineShoppingBag } from 'react-icons/hi'
 import { HiBars3BottomRight, HiMiniXMark } from 'react-icons/hi2'
 import SearchBar from './SearchBar'
 import Carddraw from '../Layout/Carddraw'
+import { useSelector } from 'react-redux'
 const Navbar = () => {
 
     const [opencart, setopencart] = useState(true)
     const [mobilenav, setmobilenav] = useState(false)
+    const { cart } = useSelector((state) => state.cart);
+
+    const cartItemCount = cart?.products?.reduce((total, product) => total + product.quantity, 0) || 0;
     const handlecart = () => {
         setopencart(!opencart)
         console.log(opencart);
@@ -25,10 +29,10 @@ const Navbar = () => {
                 </div>
                 {/* center */}
                 <div className='hidden md:flex space-x-6 '>
-                    <Link to={'/collections/all'} className="text-gray-700 hover:text-black text-sm font-medium uppercase">MEN</Link>
-                    <Link className="text-gray-700 hover:text-black text-sm font-medium uppercase">WOMEN</Link>
-                    <Link className="text-gray-700 hover:text-black text-sm font-medium uppercase">TOP WEAR</Link>
-                    <Link className="text-gray-700 hover:text-black text-sm font-medium uppercase">BOTTOM WEAR</Link>
+                    <Link to={'/collections/all?gender=Men'} className="text-gray-700 hover:text-black text-sm font-medium uppercase">MEN</Link>
+                    <Link to={'/collections/all?gender=Women'} className="text-gray-700 hover:text-black text-sm font-medium uppercase">WOMEN</Link>
+                    <Link to={"/collections/all?category=Top Wear"} className="text-gray-700 hover:text-black text-sm font-medium uppercase">TOP WEAR</Link>
+                    <Link to={"/collections/all?category=Bottom Wear"} className="text-gray-700 hover:text-black text-sm font-medium uppercase">BOTTOM WEAR</Link>
                 </div>
                 {/* right */}
                 <div className='flex items-center  space-x-3 '>
@@ -36,7 +40,8 @@ const Navbar = () => {
                     <Link to={"/profile"} className='hover:text-black'><HiOutlineUser className='w-6 h-6 text-gray-700' /></Link>
                     <button onClick={handlecart} className='relative hover:text-black'>
                         <HiOutlineShoppingBag className='w-6 h-6 text-gray-700' />
-                        <span className='bg-rabbit-red -top-1 absolute text-white text-xs rounded-full px-2 p-0.5'>4</span>
+                        {cartItemCount > 0 && (<span className='bg-rabbit-red -top-1 absolute text-white text-xs rounded-full px-2 p-0.5'>{cartItemCount}</span>)}
+
                     </button>
                     {/* search */}
                     <div className='overflow-hidden '>
@@ -56,10 +61,10 @@ const Navbar = () => {
                 <div>
                     <h3 className='text-2xl font-semibold '>Menu</h3>
                     <div className='flex flex-col gap-4 mt-5'>
-                        <Link to={'/collections/all'} className='"text-gray-700 hover:text-black text-sm font-medium uppercase'>MEN</Link>
-                        <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"#"}>WOMEN</Link>
-                        <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"#"}>TOP WEAR</Link>
-                        <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"#"}>BOTTOM WEAR</Link>
+                        <Link to={'/collections/all?gender=Men'} className='"text-gray-700 hover:text-black text-sm font-medium uppercase'>MEN</Link>
+                        <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"/collections/all?gender=Women"}>WOMEN</Link>
+                        <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"/collections/all?category=Top Wear"}>TOP WEAR</Link>
+                        <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"/collections/all?category=Bottom Wear"}>BOTTOM WEAR</Link>
 
                     </div>
                 </div>
