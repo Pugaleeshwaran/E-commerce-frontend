@@ -4,17 +4,17 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 const Filter = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate()
-    const [filter, setFilter] = useState([{
+    const [filter, setFilter] = useState({
         category: "",
         gender: "",
         color: "",
         size: [],
-        meterial: [],
+        material: [],
         brand: [],
         minPrice: 0,
         maxPrice: 2000,
-    }]);
-    const [priceRange, setPriceRange] = useState([0, 100]);
+    });
+    const [priceRange, setPriceRange] = useState([0, 2000]);
 
     const handlegetValue = (e) => {
         const { name, value, type, checked } = e.target
@@ -35,56 +35,71 @@ const Filter = () => {
             newFilter[name] = value;
         }
         setFilter(newFilter)
-        console.log(newFilter);
+        // console.log(newFilter);
         updateURLparams(newFilter)
     }
     const updateURLparams = (newFilters) => {
         const params = new URLSearchParams();
 
-        Object.keys(newFilters).forEach(function (key) {
+        Object.keys(newFilters).forEach((key) => {
             if (Array.isArray(newFilters[key]) && newFilters[key].length > 0) {
                 params.append(key, newFilters[key].join(","));
-            }
-            else if (newFilters[key]) {
-                params.append(key, newFilters[key])
+            } else if (
+                !Array.isArray(newFilters[key]) &&
+                newFilters[key] !== "" &&
+                newFilters[key] !== null &&
+                newFilters[key] !== undefined
+            ) {
+                params.append(key, newFilters[key]);
             }
         });
-        setSearchParams(params)
-        navigate(`?${params.toString()}`)
-    }
+
+        setSearchParams(params);
+    };
 
     const handlePrice = (e) => {
-        const newPrice = e.target.value
-        setPriceRange([0, newPrice])
-        const newFilter = { ...filter, minPrice: 0, maxPrice: newPrice };
+        const newPrice = Number(e.target.value);
+
+        setPriceRange([0, newPrice]);
+
+        const newFilter = {
+            ...filter,
+            minPrice: 0,
+            maxPrice: newPrice
+        };
+
         setFilter(newFilter);
-        updateURLparams(newFilter)
-    }
+        updateURLparams(newFilter);
+    };
 
     const category = ["Top Wear", "Bottom Wear"];
     const gender = ["Male", "Female"];
     const color = ["Red", "Yellow", "Black", "White", "blue", "Green", "Pink"]
     const size = ["S", "M", "L", "XL", "XXL", "XXXL"];
-    const meterial = ["Cotton", "Wool", "Denin", "Polyster", "Lycra", "Silk", "Linen"]
+    const material = ["Cotton", "Wool", "Denin", "Polyster", "Lycra", "Silk", "Linen"]
     const brand = ["Zara", "H&M", "Sntich", "Tiger", "Flower"]
 
-
     useEffect(() => {
-        const param = Object.fromEntries([...searchParams])
+        const param = Object.fromEntries([...searchParams]);
+
         setFilter({
             category: param.category || "",
             gender: param.gender || "",
             color: param.color || "",
             size: param.size ? param.size.split(",") : [],
-            meterial: param.meterial ? param.meterial.split(",") : [],
+            material: param.material ? param.material.split(",") : [],
             brand: param.brand ? param.brand.split(",") : [],
-            minPrice: param.minPrice || 0,
-            maxPrice: param.maxPrice || 2000,
-        })
-        setPriceRange([0, param.maxPrice || 2000])
-    }, [searchParams])
+            minPrice: Number(param.minPrice) || 0,
+            maxPrice: Number(param.maxPrice) || 2000,
+        });
+
+        setPriceRange([
+            0,
+            Number(param.maxPrice) || 2000
+        ]);
+    }, [searchParams]);
     return (
-        <div className='p-4'>
+        <div className='p-4 w-3/4'>
             <h3 className='text-xl font-medium text-gray-800 mb-4'>Filter</h3>
 
             {/* category Filter */}
@@ -137,12 +152,20 @@ const Filter = () => {
                             return (
                                 <div key={color} className='flex items-center mb-1'>
                                     <button
-                                        onClick={handlegetValue}
-                                        value={color}
-                                        name='color'
-                                        checked={filter.color == color}
-                                        className={`w-8 border h-8 border-gray-300 cursor-pointer rounded-full transition hover:scale-105 ${filter.color == color ? "ring-2 ring-blue-200" : ""}`}
-                                        style={{ backgroundColor: color.toLocaleLowerCase() }}>
+                                        type="button"
+                                        onClick={() => {
+                                            const newFilter = {
+                                                ...filter,
+                                                color: filter.color === color ? "" : color
+                                            };
+
+                                            setFilter(newFilter);
+                                            updateURLparams(newFilter);
+                                        }}
+                                        className={`w-8 border h-8 border-gray-300 cursor-pointer rounded-full transition hover:scale-105 ${filter.color === color ? "ring-2 ring-blue-200" : ""
+                                            }`}
+                                        style={{ backgroundColor: color.toLowerCase() }}
+                                    >
                                     </button>
                                 </div>
                             )
@@ -155,7 +178,7 @@ const Filter = () => {
                 <div className='flex flex-col gap-2'>
                     {
                         size.map((size) => {
-                            console.log(size);
+                            // console.log(size);
 
                             return (
                                 <div key={size} className='flex items-center mb-1'>
@@ -176,16 +199,16 @@ const Filter = () => {
                 <label className='block text-gray-600 font-medium mb-2'>Material</label>
                 <div className='flex flex-col gap-2'>
                     {
-                        meterial.map((meterial) => {
+                        material.map((material) => {
                             return (
-                                <div key={meterial} className='flex items-center mb-1 gap-1'>
+                                <div key={material} className='flex items-center mb-1 gap-1'>
                                     <input onChange={handlegetValue}
-                                        value={meterial}
-                                        name='meterial'
+                                        value={material}
+                                        name='material'
                                         type="checkbox"
-                                        checked={filter.meterial?.includes(meterial)}
+                                        checked={filter.material?.includes(material)}
                                         className='mr-2 h-4 w-4 text-blue-500 focus:border-gray-300' />
-                                    <span>{meterial}</span>
+                                    <span>{material}</span>
                                 </div>
                             )
                         })

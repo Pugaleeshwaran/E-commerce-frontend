@@ -13,9 +13,9 @@ const Prouctdetial = ({ productId }) => {
         (state) => state.products
     );
     const { user, guestId } = useSelector((state) => state.auth);
-    const [mainimg, setmainimg] = useState();
-    const [selcolor, setselcolor] = useState();
-    const [selsize, setselsize] = useState();
+    const [mainimg, setmainimg] = useState("");
+    const [selcolor, setselcolor] = useState("");
+    const [selsize, setselsize] = useState("");
     const [quantity, setquantity] = useState(1);
     const [btndisable, setbtndisable] = useState(false)
     const productFetchId = productId || id;
@@ -164,7 +164,7 @@ const Prouctdetial = ({ productId }) => {
                                                 <td className='py-1'>{selectedProduct.brand}</td>
                                             </tr>
                                             <tr>
-                                                <td className='py-1'>Meterial</td>
+                                                <td className='py-1'>Material</td>
                                                 <td className='py-1'>{selectedProduct.material}</td>
                                             </tr>
                                         </tbody>

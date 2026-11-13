@@ -1,33 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Paypalbtn from './Paypalbtn';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCheckout } from '../../redux/checkoutSlice';
+import axios from 'axios';
 
-const cart = {
-    product: [
-        {
-            productId: 1,
-            name: "T-shirt",
-            size: "M",
-            color: "Red",
-            quantity: 1,
-            price: 150,
-            image: "https://picsum.photos/200?random=1"
-        },
-        {
-            productId: 2,
-            name: "Jean",
-            size: "34",
-            color: "Blue",
-            quantity: 1,
-            price: 550,
-            image: "https://picsum.photos/200?random=2"
-        },
-    ],
-    totalPrice: 1250,
-}
 const Checkout = () => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { cart, loading, error } = useSelector((state) => state.cart);
+    const { user } = useSelector((state) => state.auth);
     const [shippingAddress, setShippingAddress] = useState({
         fristName: "",
         lastName: "",
@@ -37,32 +20,82 @@ const Checkout = () => {
         country: "",
         phone: "",
     })
-
     const [checkOutId, setcheckoutId] = useState(null);
 
+    //Ensure cart is loaded before Processing
+    useEffect(() => {
+        if (!cart || !cart.products || cart.products.length === 0) {
+            navigate("/");
+        }
+    }, [cart, navigate]);
 
-    const handleCheckout = (e) => {
+    const handleCreateCheckout = async (e) => {
         e.preventDefault();
-        setcheckoutId(123)
+        if (cart && cart.products.length > 0) {
+            const res = await dispatch(
+                createCheckout({
+                    checkoutItems: cart.products,
+                    shippingAddress,
+                    paymentMethod: "Paypal",
+                    totalPrice: cart.totalPrice,
+                })
+            );
+            if (res.payload && res.payload._id) {
+                setcheckoutId(res.payload._id); //set Checkout Id if checkout was sucessfully
+            }
+        }
     }
 
-    const handleSucess = (detials) => {
-        console.log("Payment Suceesssfull", detials);
-        navigate("/order-conformation")
 
+    const handleSucess = async (details) => {
+        try {
+            const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkOutId}/pay`, { paymentStatus: "paid", paymentDetails: details }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+                },
+            });
+
+            await handleFinalizeCheckout(checkOutId); // finalize checkout if payment is suceesfully
+            console.log("Final Order:", response.data);
+        } catch (error) {
+            console.error(error);
+
+        }
+
+    }
+
+    const handleFinalizeCheckout = async (checkOutId) => {
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkOutId}/finalize`,
+                {}, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+                },
+            }
+            );
+            navigate("/order-conformation")
+        } catch (error) {
+            console.error(error);
+
+        }
+    };
+    if (loading) return <p>Loading Cart...</p>
+    if (error) return <p>Error:{error}</p>
+    if (!cart || !cart.products || cart.products.length === 0) {
+        return <p>Your cart is empty</p>
     }
     return (
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto py-10 px-6 tracking-tighter'>
             {/* left setion */}
             <div className='bg-white rounded-lg p-6'>
                 <h2 className='text-2xl uppercase mb-6'>Checkout</h2>
-                <form onSubmit={handleCheckout}>
+                <form onSubmit={handleCreateCheckout}>
                     <h3 className='text-lg mb-4'>
                         Contact Details
                     </h3>
                     <div className='mb-4'>
                         <label className='block text-gray-700'>Email</label>
-                        <input type="email" value="user@example.com" className='w-full p-2 border rounded' disabled />
+                        <input type="email" value={user ? user.mail : ""} className='w-full p-2 border rounded' disabled />
                     </div>
                     <div>
                         <h3 className='text-lg mb-4'>Delivery</h3>
@@ -131,7 +164,7 @@ const Checkout = () => {
             <div className='bg-gray-50 p-6 rounded-lg'>
                 <h3 className='text-lg font-semibold mb-2'>Order Summary</h3>
                 {
-                    cart.product.map((item, index) => {
+                    cart.products.map((item, index) => {
                         return (
                             <div key={index} className='p-3 flex gap-4 border-t border-b mb-2'>
                                 <img className='w-28 h-28 object-cover rounded' src={item.image} alt={item.name} />

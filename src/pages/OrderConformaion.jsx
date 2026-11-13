@@ -1,37 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { clearCart } from '../redux/cartSlice';
 
-const checkout = {
-    _id: "12343",
-    createdAt: new Date(),
-    checkoutItem: [
-        {
-            productId: 1,
-            name: "T-shirt",
-            size: "M",
-            color: "Red",
-            quantity: 1,
-            price: 150,
-            image: "https://picsum.photos/200?random=1"
-        },
-        {
-            productId: 2,
-            name: "Jean",
-            size: "34",
-            color: "Blue",
-            quantity: 1,
-            price: 550,
-            image: "https://picsum.photos/200?random=2"
-        },
-    ],
-    shippingAddress: {
-        address: "123 Rubit Street",
-        City: "Chennai",
-        country: "India",
-    }
-}
 
 
 const OrderConformaion = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { checkout } = useSelector((state) => state.checkout);
+    console.log(checkout);
+
+    //Clear the cart when the Order is confirmed
+    useEffect(() => {
+        if (checkout && checkout._id) {
+            dispatch(clearCart());
+            localStorage.removeItem("cart");
+        } else {
+            navigate("/my-order");
+        }
+    }, [checkout, dispatch, navigate]);
+
     const calculateDelivary = (createdAt) => {
         const orderDate = new Date(createdAt);
         orderDate.setDate(orderDate.getDate() + 10); // add 10 day extra
@@ -68,7 +57,9 @@ const OrderConformaion = () => {
                         {/* Ordered Items */}
                         <div className='mb-20'>
                             {
-                                checkout.checkoutItem.map((item) => {
+                                checkout.checkoutItems?.map((item, index) => {
+                                    console.log("item", item);
+
                                     return (
                                         <>
                                             <div key={item.productId} className='flex items-center mb-4'>
@@ -108,7 +99,7 @@ const OrderConformaion = () => {
                                     {checkout.shippingAddress.address}
                                 </p>
                                 <p className='text-gray-600'>
-                                    {checkout.shippingAddress.City},{" "}
+                                    {checkout.shippingAddress.city},{" "}
                                     {checkout.shippingAddress.country}
                                 </p>
                             </div>

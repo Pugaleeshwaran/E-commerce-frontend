@@ -16,7 +16,7 @@ const SearchBar = () => {
     const handlesubmit = (e) => {
         e.preventDefault()
         dispatch(setFilters({ search: search }));
-        navigate(`/collections/add?search=${search}`)
+        navigate(`/collections/all?search=${search}`)
         console.log(search);
         setopen(false)
         setsearch("")

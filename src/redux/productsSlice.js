@@ -33,8 +33,9 @@ export const fetchProductsByFilters = createAsyncThunk(
         if (limit) quary.append("limit", limit)
 
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products?${quary.toString()}`);
-        return response.data
         console.log(response.data);
+        return response.data
+
 
     }
 );
@@ -146,7 +147,7 @@ const productsSlice = createSlice({
                 state.loading = false;
                 const updatedProduct = action.payload;
                 const index = state.products.findIndex(
-                    (product) => product._id === updateProduct._id
+                    (product) => product._id === updatedProduct._id
                 );
                 if (index !== -1) {
                     state.products[index] = updatedProduct;

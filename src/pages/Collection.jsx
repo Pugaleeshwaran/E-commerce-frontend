@@ -48,10 +48,10 @@ const Collection = () => {
                 <FaFilter className='mr-2' /> Filter
             </button>
             <div ref={sidebarRef} className={`${sidebar ? "translate-x-0" : "-translate-x-full"} fixed w-1/2 left-0 inset-y-0 
-            bg-white z-50 overflow-y-auto transition-transform duration-300 lg:static lg:w-64 lg:translate-x-0`}>
+            bg-white z-50 overflow-y-auto transition-transform duration-300 lg:static lg:w-1/6 lg:translate-x-0`}>
                 <Filter />
             </div>
-            <div className='flex-grow p-4'>
+            <div className='flex-grow p-4 lg:w-1/2'>
                 <div className=' mb-4 flex flex-col gap-2 items-center md:flex-row justify-between'>
                     <h2 className='text-2xl uppercase '>All collections</h2>
                     <SortItem />

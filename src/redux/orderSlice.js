@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 //Async thunk to fetch user orders
@@ -16,6 +16,7 @@ export const fetchUserOrders = createAsyncThunk(
                 }
             );
             return response.data;
+            
         } catch (error) {
             return rejectWithValue(error.response.data);
         }
@@ -28,7 +29,7 @@ export const fetchOrderDetails = createAsyncThunk(
     "orders/fetchOrderDetails", async (orderId, { rejectWithValue }) => {
         try {
             const response = await axios.get(
-                `${import.meta.env.VITE_BACKEND_URLx}/api/order/${orderId}`,
+                `${import.meta.env.VITE_BACKEND_URL}/api/orders/${orderId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("userToken")}`,
@@ -37,7 +38,7 @@ export const fetchOrderDetails = createAsyncThunk(
             );
             return response.data;
         } catch (error) {
-            rejectWithValue(error.response.data)
+            return rejectWithValue(error.response.data)
         }
     }
 );
@@ -64,7 +65,7 @@ const orderSlice = createSlice({
                 state.orders = action.payload;
             })
             .addCase(fetchUserOrders.rejected, (state, action) => {
-                state.loading = true;
+                state.loading = false;
                 state.error = action.payload.message;
             })
             //Fetch order Details
@@ -74,7 +75,7 @@ const orderSlice = createSlice({
             })
             .addCase(fetchOrderDetails.fulfilled, (state, action) => {
                 state.loading = false;
-                state.orders = action.payload;
+                state.orderDetails = action.payload;
             })
             .addCase(fetchOrderDetails.rejected, (state, action) => {
                 state.loading = true;
