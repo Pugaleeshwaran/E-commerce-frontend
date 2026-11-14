@@ -53,7 +53,9 @@ const Collection = () => {
             </div>
             <div className='flex-grow p-4 lg:w-1/2'>
                 <div className=' mb-4 flex flex-col gap-2 items-center md:flex-row justify-between'>
-                    <h2 className='text-2xl uppercase '>All collections</h2>
+                    <h2 className='text-2xl uppercase '>
+                        {collection && collection.toLowerCase() !== "all" ? collection : "All collections"}
+                    </h2>
                     <SortItem />
                 </div>
 

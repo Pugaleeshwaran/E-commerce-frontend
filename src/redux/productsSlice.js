@@ -20,15 +20,15 @@ export const fetchProductsByFilters = createAsyncThunk(
     }) => {
         const quary = new URLSearchParams();
         if (collection) quary.append("collection", collection)
-        if (size) quary.append("size", size)
-        if (color) quary.append("color", color)
+        if (size) quary.append("sizes", size)
+        if (color) quary.append("colors", color)
         if (gender) quary.append("gender", gender)
         if (minPrice) quary.append("minPrice", minPrice)
-        if (maxPrice) quary.append("maxPrice", maxPrice)
+        if (maxPrice) quary.append("MaxPrice", maxPrice)
         if (sortBy) quary.append("sortBy", sortBy)
         if (search) quary.append("search", search)
         if (category) quary.append("category", category)
-        if (material) quary.append("material", material)
+        if (material) quary.append("materials", material)
         if (brand) quary.append("brand", brand)
         if (limit) quary.append("limit", limit)
 

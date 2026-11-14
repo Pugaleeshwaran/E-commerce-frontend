@@ -4,6 +4,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 const Filter = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate()
+    const { collection: currentCollection = "all" } = useParams();
     const [filter, setFilter] = useState({
         category: "",
         gender: "",
@@ -39,18 +40,15 @@ const Filter = () => {
         updateURLparams(newFilter)
     }
     const updateURLparams = (newFilters) => {
-        const params = new URLSearchParams();
+        const params = new URLSearchParams(searchParams);
 
         Object.keys(newFilters).forEach((key) => {
-            if (Array.isArray(newFilters[key]) && newFilters[key].length > 0) {
-                params.append(key, newFilters[key].join(","));
-            } else if (
-                !Array.isArray(newFilters[key]) &&
-                newFilters[key] !== "" &&
-                newFilters[key] !== null &&
-                newFilters[key] !== undefined
-            ) {
-                params.append(key, newFilters[key]);
+            const value = newFilters[key];
+            params.delete(key);
+            if (Array.isArray(value)) {
+                if (value.length > 0) params.set(key, value.join(","));
+            } else if (value !== "" && value !== null && value !== undefined) {
+                params.set(key, value);
             }
         });
 
@@ -72,12 +70,22 @@ const Filter = () => {
         updateURLparams(newFilter);
     };
 
+    // Collections live in the URL path (/collections/:collection); the other filters stay in the query string
+    const collectionOptions = [
+        { label: "All", value: "all" },
+        { label: "Ethnic Wear", value: "Ethnic Wear" },
+    ];
+    const handleCollection = (e) => {
+        const query = searchParams.toString();
+        navigate(`/collections/${encodeURIComponent(e.target.value)}${query ? `?${query}` : ""}`);
+    };
+
     const category = ["Top Wear", "Bottom Wear"];
-    const gender = ["Male", "Female"];
-    const color = ["Red", "Yellow", "Black", "White", "blue", "Green", "Pink"]
-    const size = ["S", "M", "L", "XL", "XXL", "XXXL"];
-    const material = ["Cotton", "Wool", "Denin", "Polyster", "Lycra", "Silk", "Linen"]
-    const brand = ["Zara", "H&M", "Sntich", "Tiger", "Flower"]
+    const gender = ["Men", "Women"];
+    const color = ["Red", "Yellow", "Black", "White", "Blue", "Green", "Pink", "Gray", "Navy", "Beige"];
+    const size = ["XS", "S", "M", "L", "XL", "XXL", "Free Size"];
+    const material = ["Cotton", "Cotton Blend", "Denim", "Polyester", "Linen Blend", "Wool Blend", "Silk", "Silk Blend", "Viscose", "Fleece", "Georgette", "Rayon"];
+    const brand = ["Desi Threads", "Rangoli", "Utsav Wear", "Shaadi Couture", "Noor Fashion", "Kerala Handloom", "ActiveWear", "DenimStyle", "ChicStyle", "ElegantWear"];
 
     useEffect(() => {
         const param = Object.fromEntries([...searchParams]);
@@ -101,6 +109,27 @@ const Filter = () => {
     return (
         <div className='p-4 w-3/4'>
             <h3 className='text-xl font-medium text-gray-800 mb-4'>Filter</h3>
+
+            {/* collection Filter */}
+            <div className='mb-6'>
+                <label className='block text-gray-600 font-medium mb-2'>Collection</label>
+                {
+                    collectionOptions.map(({ label, value }) => {
+                        return (
+                            <div key={value} className='flex items-center mb-1'>
+                                <input onChange={handleCollection}
+                                    value={value}
+                                    type="radio"
+                                    name='collection'
+                                    checked={currentCollection.toLowerCase() === value.toLowerCase()}
+                                    className='mr-2 h-4 w-4 text-blue-500 border-gray-300'
+                                />
+                                <span>{label}</span>
+                            </div>
+                        )
+                    })
+                }
+            </div>
 
             {/* category Filter */}
             <div className='mb-6'>

@@ -5,14 +5,14 @@ const SortItem = () => {
     const [searchParam, setSearchParam] = useSearchParams('')
     const handleshot = (e) => {
         const sortby = e.target.value;
-        searchParam.set("sortby", sortby)
+        searchParam.set("sortBy", sortby)
         setSearchParam(searchParam)
     }
     return (
         <div className=' flex items-center justify-end'>
             <select id="sort"
                 onChange={handleshot}
-                value={searchParam.get("sortby") || ""}
+                value={searchParam.get("sortBy") || ""}
                 className='border p-2 rounded-md focus:outline-none'>
                 <option className='p-2' value="">Default</option>
                 <option className='p-2' value="priceAsc">Price: Low to High</option>

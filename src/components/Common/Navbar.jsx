@@ -33,6 +33,7 @@ const Navbar = () => {
                     <Link to={'/collections/all?gender=Women'} className="text-gray-700 hover:text-black text-sm font-medium uppercase">WOMEN</Link>
                     <Link to={"/collections/all?category=Top Wear"} className="text-gray-700 hover:text-black text-sm font-medium uppercase">TOP WEAR</Link>
                     <Link to={"/collections/all?category=Bottom Wear"} className="text-gray-700 hover:text-black text-sm font-medium uppercase">BOTTOM WEAR</Link>
+                    <Link to={"/collections/Ethnic Wear"} className="text-gray-700 hover:text-black text-sm font-medium uppercase">ETHNIC WEAR</Link>
                 </div>
                 {/* right */}
                 <div className='flex items-center  space-x-3 '>
@@ -65,6 +66,7 @@ const Navbar = () => {
                         <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"/collections/all?gender=Women"}>WOMEN</Link>
                         <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"/collections/all?category=Top Wear"}>TOP WEAR</Link>
                         <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"/collections/all?category=Bottom Wear"}>BOTTOM WEAR</Link>
+                        <Link className='"text-gray-700 hover:text-black text-sm font-medium uppercase' to={"/collections/Ethnic Wear"}>ETHNIC WEAR</Link>
 
                     </div>
                 </div>
